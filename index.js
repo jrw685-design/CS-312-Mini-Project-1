@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.static("public"));
 app.get("/", (req, res) => {
     
+    console.log(blogPosts);
     res.sendFile(__dirname + "/public/styles1.css");
     res.render(__dirname + "/home.ejs", {
         blogList: blogPosts
@@ -63,16 +64,24 @@ app.listen(port, () => {
 function removePost(blogid)
 {
     
-    if (blogid == 0)
+    console.log(blogPosts[blogid].title);
+    if (blogPosts.length > 1)
+    
+    
     {
-        blogPosts = [];
-    }
-    else
-    {
-        for (i = blogid; i < blogPosts.length - 1; i++)
+        for (var i = blogid; i < blogPosts.length - 2; i++)
         {
-            blogPosts[i] = blogPosts[i+1];
+            var j = i + 1;
+            blogPosts[i].title = blogPosts[j].title;
+            blogPosts.author[i] = blogPosts.author[j];
+            blogPosts.date[i] = blogPosts.date[j];
+            blogPosts.content[i] = blogPosts.content[j];
         }
         blogPosts.length -= 1;
     }
+    else
+    {
+        blogPosts = [];
+    }
+    console.log("done");
 }
